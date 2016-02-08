@@ -13,15 +13,41 @@ db = SQLAlchemy()
 # Part 1: Compose ORM
 
 class Model(db.Model):
+    """Create model class related to models table"""
 
     __tablename__ = "models"
-    pass
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    year = db.Column(db.Integer, nullable=False)
+    brand_name = db.Column(db.String(50), db.ForeignKey("brands.name"))
+    name = db.Column(db.String(50), nullable=False)
+
+    brand = db.relationship("Brand", backref="models")
+
+    def __repr__(self):
+        """Show info about model."""
+
+        return "<Model id=%s year=%s brand_name=%s name=%s>" % (
+            self.id, self.year, self.brand_name, self.name)
 
 
 class Brand(db.Model):
+    """Create brand class related to brands table"""
 
     __tablename__ = "brands"
-    pass
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    name = db.Column(db.String(50), nullable=False)
+    founded = db.Column(db.Integer)
+    headquarters = db.Column(db.String(50))
+    discontinued = db.Column(db.Integer)
+
+    def __repr__(self):
+        """Show info about brand."""
+
+        return "<Brand id=%s name=%s founded=%s headquarters=%s discontinued=%s>" % (
+            self.id, self.name, self.founded, self.headquarters, self.discontinued)
+
 
 # End Part 1
 ##############################################################################
